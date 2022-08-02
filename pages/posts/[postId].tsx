@@ -9,6 +9,9 @@ export interface  DetailPageProps {
 export default function DetailPage ({post}:  DetailPageProps) {
     const router = useRouter()
     console.log(router)
+    if(router.isFallback){
+      return "<div>Loadding...</div>"
+    }
     if(!post) return null;
 
   return (
@@ -26,7 +29,7 @@ export const getStaticPaths:GetStaticPaths = async()=>{
   const data = await repons.json()
   return{
     paths: data.data.map((post:any) =>({params:{postId:post.id}})),
-    fallback:false
+    fallback:true
   }
 }
 
@@ -36,10 +39,10 @@ export const getStaticProps: GetStaticProps<DetailPageProps> = async(context:Get
   if(!postId) return {notFound:true}
   const repons = await fetch(`https:js-post-api.herokuapp.com/api/posts/${postId}`)
   const data = await repons.json()
-  console.log(data)
   return {
     props:{
       post:data
-    }
+    },
+    revalidate:5,  //ISR
   }
 }

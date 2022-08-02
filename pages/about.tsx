@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import  React, { useEffect, useState } from 'react';
+import { MainLayout } from '../component/layout';
 // import Header from '../component/Header';
 
 const Header = dynamic(()=>import ('../component/Header'),{ssr:false})
@@ -42,3 +43,5 @@ export default function AboutPage (props: AboutPageProps) {
     </div>
   );
 }
+
+AboutPage.Layout = MainLayout
